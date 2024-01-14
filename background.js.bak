@@ -41,10 +41,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 
 async function getTransactions() {
-  if (!db) {
-    console.error("Database is not yet initialized.");
-    return [];
-  }
   const transaction = db.transaction([STORE_NAME], "readonly");
   const objectStore = transaction.objectStore(STORE_NAME);
   const transactions = await new Promise((resolve) => {
@@ -86,10 +82,10 @@ async function deleteTransaction(transaction_id) {
     const deleteRequest = objectStore.delete(idToDelete);
 
     deleteRequest.onsuccess = () => {
-      resolve({ success: true });
+      resolve({success: true});
     };
     deleteRequest.onerror = () => {
-      reject({ success: true, error: deleteRequest.error });
+      reject({success: true, error: deleteRequest.error});
     };
   });
 }
@@ -112,10 +108,3 @@ function clearHistory() {
     return { success: false };
   };
 }
-
-
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status == 'complete') {
-      chrome.tabs.sendMessage(tabId, {'action': 'complete'});
-  }
-});

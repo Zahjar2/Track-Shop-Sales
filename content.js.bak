@@ -116,11 +116,7 @@ function formatCoinValue(value) {
   return formatter.format(value);
 }
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  // Handle the message
-  if (request.action === "complete") {
-    console.log("Complete content");
-    if (checkForSpecificText()) {
+if (checkForSpecificText()) {
   chrome.runtime.sendMessage(
     { action: "getTransactions" },
     displayTransactions
@@ -132,8 +128,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     },
     deleteSalesHistory
   );
-    } else {
+} else {
   console.error("Not found");
-    }
-  }
-});
+}
